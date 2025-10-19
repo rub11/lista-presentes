@@ -388,7 +388,32 @@
             bottom: 20%;
             right: 12%;
         }
-        
+
+        .copy-btn {
+    background-color: #C89ED6; /* lilás suave */
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 12px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.copy-btn:hover {
+    background-color: #B070C8; /* lilás mais escuro no hover */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+}
+
+.copy-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+      
         @media (max-width: 768px) {
             h1 {
                 font-size: 2.8rem;
@@ -611,7 +636,7 @@
         <div class="modal-content">
             <button class="close-modal">&times;</button>
             <h2 class="modal-title">Obrigada pelo presente!</h2>
-            <p class="modal-message">Ficamos muito felizes com seu carinho! Para presentear, você pode fazer uma doação via PIX escaneando o código abaixo. Cada contribuição nos ajuda a realizar nossos sonhos juntos! 💜</p>
+            <p class="modal-message">Ficamos muito felizes com seu carinho! Para presentear, você pode fazer uma doação via PIX copiando o código abaixo. Cada contribuição nos ajuda a realizar nossos sonhos juntos! 💜</p>
             
           
             
