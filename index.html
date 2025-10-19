@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Presentes - Casamento</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9f5ff;
+            color: #5a4a6a;
+            line-height: 1.6;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="%23e6d4f7" opacity="0.3" d="M50,30 C60,20 70,25 75,35 C80,45 75,55 65,60 C75,65 80,75 75,85 C70,95 60,90 50,85 C40,90 30,95 25,85 C20,75 25,65 35,60 C25,55 20,45 25,35 C30,25 40,20 50,30 Z"/></svg>');
+            background-size: 100px;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(138, 43, 226, 0.1);
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(to right, #e6d4f7, #c9a8e8, #e6d4f7);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            color: #8a4ebf;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #7a6a8a;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            line-height: 1.7;
+        }
+        
+        .gifts-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .gift-card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #f0e6ff;
+        }
+        
+        .gift-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(138, 43, 226, 0.15);
+        }
+        
+        .gift-image {
+           
+            background-color: #f5f0ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gift-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .gift-image::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(to right, #e6b0ff, #c9a8e8, #e6b0ff);
+        }
+        
+        .gift-details {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .gift-name {
+            font-size: 1.3rem;
+            color: #6d5b7a;
+            margin-bottom: 10px;
+            font-weight: 500;
+            text-align: center;
+        }
+        
+        .gift-price {
+            font-size: 1.1rem;
+            color: #8a4ebf;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .gift-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: auto;
+        }
+        
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(138, 43, 226, 0.2);
+        }
+        
+        .btn-pix {
+            background: linear-gradient(to right, #c9a8e8, #e6b0ff);
+            color: white;
+        }
+        
+        .btn-pix:hover {
+            background: linear-gradient(to right, #b898d8, #d6a0ef);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.3);
+        }
+        
+        .btn-list {
+            background-color: white;
+            color: #8a4ebf;
+            border: 2px solid #c9a8e8;
+        }
+        
+        .btn-list:hover {
+            background-color: #f5f0ff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.2);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #8a4ebf;
+            cursor: pointer;
+        }
+        
+        .modal-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem;
+            color: #8a4ebf;
+            margin-bottom: 20px;
+        }
+        
+        .modal-message {
+            font-size: 1.1rem;
+            color: #5a4a6a;
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+        
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 25px;
+            background-color: #f5f0ff;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px dashed #c9a8e8;
+        }
+        
+        .pix-info {
+            background-color: #f9f5ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .pix-info p {
+            margin: 8px 0;
+        }
+        
+        .list-modal {
+            max-width: 800px;
+        }
+        
+        .gift-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 20px;
+        }
+        
+        .gift-info-image {
+            width: 120px;
+            height: 120px;
+            background-color: #f5f0ff;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        
+        .gift-info-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .gift-info-text {
+            text-align: left;
+        }
+        
+        .gift-info-name {
+            font-size: 1.5rem;
+            color: #6d5b7a;
+            margin-bottom: 5px;
+        }
+        
+        .gift-info-price {
+            font-size: 1.2rem;
+            color: #8a4ebf;
+            font-weight: 500;
+        }
+        
+        .store-list {
+            text-align: left;
+        }
+        
+        .store-list h3 {
+            color: #8a4ebf;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .store-list ul {
+            list-style-type: none;
+        }
+        
+        .store-list li {
+            padding: 10px 0;
+            border-bottom: 1px dashed #e6d4f7;
+        }
+        
+        .store-list a {
+            color: #6d5b7a;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .store-list a:hover {
+            color: #8a4ebf;
+        }
+        
+        .cat-decoration {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            opacity: 0.7;
+        }
+        
+        .cat-left {
+            top: 20px;
+            left: 5%;
+        }
+        
+        .cat-right {
+            top: 20px;
+            right: 5%;
+        }
+        
+        .floral-decoration {
+            position: fixed;
+            width: 120px;
+            height: 120px;
+            opacity: 0.4;
+            z-index: -1;
+        }
+        
+        .floral-1 {
+            top: 10%;
+            left: 5%;
+        }
+        
+        .floral-2 {
+            bottom: 10%;
+            right: 5%;
+        }
+        
+        .heart-decoration {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            opacity: 0.6;
+        }
+        
+        .heart-1 {
+            top: 15%;
+            left: 10%;
+        }
+        
+        .heart-2 {
+            bottom: 20%;
+            right: 12%;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.8rem;
+            }
+            
+            .cat-decoration {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .gifts-section {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .floral-decoration {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .gift-info {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .gifts-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .cat-decoration {
+                display: none;
+            }
+            
+            .container {
+                padding: 25px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Escolha seu presente para nós!</h1>
+            <p class="subtitle">Clique em um item para nos presentear. Você terá duas opções: doação via Pix ou pela lista de presentes.</p>
+            
+            <!-- Decoração de gatinho esquerda -->
+            <div class="cat-decoration cat-left">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50,20 C60,10 80,15 85,30 C90,45 85,60 70,65 C75,75 80,85 70,90 C60,95 50,85 45,75 C40,85 30,95 20,90 C10,85 15,75 20,65 C5,60 0,45 5,30 C10,15 30,10 40,20 C42,18 45,17 48,17 C48,17 49,19 50,20 Z" fill="#c9a8e8"/>
+                    <circle cx="35" cy="35" r="5" fill="white"/>
+                    <circle cx="65" cy="35" r="5" fill="white"/>
+                    <circle cx="35" cy="35" r="2" fill="#5a4a6a"/>
+                    <circle cx="65" cy="35" r="2" fill="#5a4a6a"/>
+                    <path d="M50,50 Q55,60 45,60 Q40,55 50,50 Z" fill="#e6b0ff"/>
+                </svg>
+            </div>
+            
+            <!-- Decoração de gatinho direita -->
+            <div class="cat-decoration cat-right">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50,20 C60,10 80,15 85,30 C90,45 85,60 70,65 C75,75 80,85 70,90 C60,95 50,85 45,75 C40,85 30,95 20,90 C10,85 15,75 20,65 C5,60 0,45 5,30 C10,15 30,10 40,20 C42,18 45,17 48,17 C48,17 49,19 50,20 Z" fill="#e6b0ff"/>
+                    <circle cx="35" cy="35" r="5" fill="white"/>
+                    <circle cx="65" cy="35" r="5" fill="white"/>
+                    <circle cx="35" cy="35" r="2" fill="#5a4a6a"/>
+                    <circle cx="65" cy="35" r="2" fill="#5a4a6a"/>
+                    <path d="M50,50 Q55,60 45,60 Q40,55 50,50 Z" fill="#c9a8e8"/>
+                </svg>
+            </div>
+        </header>
+        
+        <section class="gifts-section">
+            <!-- Ventilador -->
+            <div class="gift-card">
+                <div class="gift-image">
+                    <img src="imagens/ventilador.png" alt="">
+                </div>
+                <div class="gift-details">
+                    <h3 class="gift-name">Ventilador</h3>
+                    <p class="gift-price">R$ 150,00</p>
+                    <div class="gift-actions">
+                        <button class="btn btn-pix" data-gift="Ventilador" data-price="R$ 150,00">Doe via Pix</button>
+                        <button class="btn btn-list" data-gift="Ventilador" data-price="R$ 150,00">Doe via lista</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Jogo de panela -->
+            <div class="gift-card">
+                <div class="gift-image">
+                    <img src="imagens/panela.png" alt="">
+                </div>
+                <div class="gift-details">
+                    <h3 class="gift-name">Jogo de Panela</h3>
+                    <p class="gift-price">R$ 350,00</p>
+                    <div class="gift-actions">
+                        <button class="btn btn-pix" data-gift="Jogo de Panela" data-price="R$ 350,00">Doe via Pix</button>
+                        <button class="btn btn-list" data-gift="Jogo de Panela" data-price="R$ 350,00">Doe via lista</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Filtro de água -->
+            <div class="gift-card">
+                <div class="gift-image">
+                    <img width="100%" src="imagens/Gemini_Generated_Image_5nkypi5nkypi5nky.png" alt="">
+                </div>
+                <div class="gift-details">
+                    <h3 class="gift-name">Filtro de Água</h3>
+                    <p class="gift-price">R$ 120,00</p>
+                    <div class="gift-actions">
+                        <button class="btn btn-pix" data-gift="Filtro de Água" data-price="R$ 120,00">Doe via Pix</button>
+                        <button class="btn btn-list" data-gift="Filtro de Água" data-price="R$ 120,00">Doe via lista</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Jogo de cama (queen) -->
+            <div class="gift-card">
+                <div class="gift-image">
+                 <img src="imagens/cama.png" alt="">
+                </div>
+                <div class="gift-details">
+                    <h3 class="gift-name">Jogo de Cama (Queen)</h3>
+                    <p class="gift-price">R$ 280,00</p>
+                    <div class="gift-actions">
+                        <button class="btn btn-pix" data-gift="Jogo de Cama (Queen)" data-price="R$ 280,00">Doe via Pix</button>
+                        <button class="btn btn-list" data-gift="Jogo de Cama (Queen)" data-price="R$ 280,00">Doe via lista</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Jogo de toalhas -->
+            <div class="gift-card">
+                <div class="gift-image">
+                    <img src="imagens/banho.png" alt="">
+                </div>
+                <div class="gift-details">
+                    <h3 class="gift-name">Jogo de Toalhas</h3>
+                    <p class="gift-price">R$ 180,00</p>
+                    <div class="gift-actions">
+                        <button class="btn btn-pix" data-gift="Jogo de Toalhas" data-price="R$ 180,00">Doe via Pix</button>
+                        <button class="btn btn-list" data-gift="Jogo de Toalhas" data-price="R$ 180,00">Doe via lista</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Cafeteira -->
+            <div class="gift-card">
+                <div class="gift-image">
+                   <img src="imagens/cafe.png" alt="">
+                </div>
+                <div class="gift-details">
+                    <h3 class="gift-name">Cafeteira</h3>
+                    <p class="gift-price">R$ 220,00</p>
+                    <div class="gift-actions">
+                        <button class="btn btn-pix" data-gift="Cafeteira" data-price="R$ 220,00">Doe via Pix</button>
+                        <button class="btn btn-list" data-gift="Cafeteira" data-price="R$ 220,00">Doe via lista</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Aspirador de pó -->
+            <div class="gift-card">
+                <div class="gift-image">
+                    <img src="imagens/aspirador.png" alt="">
+                </div>
+                <div class="gift-details">
+                    <h3 class="gift-name">Aspirador de Pó</h3>
+                    <p class="gift-price">R$ 320,00</p>
+                    <div class="gift-actions">
+                        <button class="btn btn-pix" data-gift="Aspirador de Pó" data-price="R$ 320,00">Doe via Pix</button>
+                        <button class="btn btn-list" data-gift="Aspirador de Pó" data-price="R$ 320,00">Doe via lista</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Panela de arroz elétrico -->
+            <div class="gift-card">
+                <div class="gift-image">
+                   <img src="imagens/Panela de Arroz Elétrico.png" alt="">
+                </div>
+                <div class="gift-details">
+                    <h3 class="gift-name">Panela de Arroz Elétrico</h3>
+                    <p class="gift-price">R$ 180,00</p>
+                    <div class="gift-actions">
+                        <button class="btn btn-pix" data-gift="Panela de Arroz Elétrico" data-price="R$ 180,00">Doe via Pix</button>
+                        <button class="btn btn-list" data-gift="Panela de Arroz Elétrico" data-price="R$ 180,00">Doe via lista</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tapete -->
+            <div class="gift-card">
+                <div class="gift-image">
+                   <img src="imagens/tapete.png" alt="">
+                </div>
+                <div class="gift-details">
+                    <h3 class="gift-name">Tapete</h3>
+                    <p class="gift-price">R$ 120,00</p>
+                    <div class="gift-actions">
+                        <button class="btn btn-pix" data-gift="Tapete" data-price="R$ 120,00">Doe via Pix</button>
+                        <button class="btn btn-list" data-gift="Tapete" data-price="R$ 120,00">Doe via lista</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <!-- Modal de Doação Pix -->
+    <div class="modal" id="pixModal">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <h2 class="modal-title">Obrigada pelo presente!</h2>
+            <p class="modal-message">Ficamos muito felizes com seu carinho! Para presentear, você pode fazer uma doação via PIX escaneando o código abaixo. Cada contribuição nos ajuda a realizar nossos sonhos juntos! 💜</p>
+            
+          
+            
+            <div class="pix-info">
+                <p><strong>Chave PIX:</strong> (11) 94124-0944</p>
+                <p><strong>Beneficiária:</strong> Camille da Silva</p>
+                <p><strong>Banco:</strong> Nubank</p>
+            </div>
+          <p class="modal-message">
+  Ou copie a chave PIX: <strong id="pixKey">(11) 94124-0944</strong> <br>
+  <button   onclick="copyPix()" class="copy-btn">Copiar</button>
+</p>
+
+        </div>
+    </div>
+    
+    <!-- Modal da Lista de Presentes -->
+    <div class="modal" id="listModal">
+        <div class="modal-content list-modal">
+            <button class="close-modal">&times;</button>
+            <h2 class="modal-title">Onde encontrar este presente</h2>
+            
+            <div class="gift-info">
+                <div class="gift-info-image" id="listGiftImage">
+                    <!-- Imagem será inserida via JavaScript -->
+                </div>
+                <div class="gift-info-text">
+                    <h3 class="gift-info-name" id="listGiftName">Nome do Presente</h3>
+                    <p class="gift-info-price" id="listGiftPrice">R$ 0,00</p>
+                </div>
+            </div>
+            
+            <div class="store-list">
+                <h3>Lojas online onde você pode encontrar:</h3>
+                <ul id="storeList">
+                    <!-- Conteúdo será preenchido via JavaScript -->
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Decorações florais -->
+    <div class="floral-decoration floral-1">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50,30 C60,20 70,25 75,35 C80,45 75,55 65,60 C75,65 80,75 75,85 C70,95 60,90 50,85 C40,90 30,95 25,85 C20,75 25,65 35,60 C25,55 20,45 25,35 C30,25 40,20 50,30 Z" fill="#e6b0ff"/>
+        </svg>
+    </div>
+    <div class="floral-decoration floral-2">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50,30 C60,20 70,25 75,35 C80,45 75,55 65,60 C75,65 80,75 75,85 C70,95 60,90 50,85 C40,90 30,95 25,85 C20,75 25,65 35,60 C25,55 20,45 25,35 C30,25 40,20 50,30 Z" fill="#c9a8e8"/>
+        </svg>
+    </div>
+    
+    <!-- Decorações de coração -->
+    <div class="heart-decoration heart-1">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50,30 C60,20 70,25 75,35 C80,45 75,55 65,60 C75,65 80,75 75,85 C70,95 60,90 50,85 C40,90 30,95 25,85 C20,75 25,65 35,60 C25,55 20,45 25,35 C30,25 40,20 50,30 Z" fill="#e6b0ff"/>
+        </svg>
+    </div>
+    <div class="heart-decoration heart-2">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50,30 C60,20 70,25 75,35 C80,45 75,55 65,60 C75,65 80,75 75,85 C70,95 60,90 50,85 C40,90 30,95 25,85 C20,75 25,65 35,60 C25,55 20,45 25,35 C30,25 40,20 50,30 Z" fill="#c9a8e8"/>
+        </svg>
+    </div>
+
+    <script>
+
+
+        function copyPix() {
+  const pixKey = document.getElementById("pixKey").innerText;
+  navigator.clipboard.writeText(pixKey)
+    .then(() => alert("Chave PIX copiada!"));
+}
+        // Elementos DOM
+        const pixModal = document.getElementById('pixModal');
+        const listModal = document.getElementById('listModal');
+        const closeButtons = document.querySelectorAll('.close-modal');
+        const pixButtons = document.querySelectorAll('.btn-pix');
+        const listButtons = document.querySelectorAll('.btn-list');
+        const listGiftName = document.getElementById('listGiftName');
+        const listGiftPrice = document.getElementById('listGiftPrice');
+        const listGiftImage = document.getElementById('listGiftImage');
+        const storeList = document.getElementById('storeList');
+        
+        // Dados das lojas para cada presente
+        const storeData = {
+            "Ventilador": [
+                { name: "Americanas", url: "https://www.americanas.com.br" },
+                { name: "Magazine Luiza", url: "https://www.magazineluiza.com.br" },
+                { name: "Casas Bahia", url: "https://www.casasbahia.com.br" }
+            ],
+            "Jogo de Panela": [
+                { name: "Tramontina", url: "https://www.tramontina.com.br" },
+                { name: "Magazine Luiza", url: "https://www.magazineluiza.com.br" },
+                { name: "Amazon", url: "https://www.amazon.com.br" }
+            ],
+            "Filtro de Água": [
+                { name: "Americanas", url: "https://www.americanas.com.br" },
+                { name: "Magazine Luiza", url: "https://www.magazineluiza.com.br" },
+                { name: "Casas Bahia", url: "https://www.casasbahia.com.br" }
+            ],
+            "Jogo de Cama (Queen)": [
+                { name: "Dekora", url: "https://www.dekora.com.br" },
+                { name: "Tok&Stok", url: "https://www.tokstok.com.br" },
+                { name: "Westwing", url: "https://www.westwing.com.br" }
+            ],
+            "Jogo de Toalhas": [
+                { name: "Renner", url: "https://www.lojarenner.com.br" },
+                { name: "Marisa", url: "https://www.marisa.com.br" },
+                { name: "C&A", url: "https://www.cea.com.br" }
+            ],
+            "Cafeteira": [
+                { name: "Americanas", url: "https://www.americanas.com.br" },
+                { name: "Magazine Luiza", url: "https://www.magazineluiza.com.br" },
+                { name: "Amazon", url: "https://www.amazon.com.br" }
+            ],
+            "Aspirador de Pó": [
+                { name: "Americanas", url: "https://www.americanas.com.br" },
+                { name: "Magazine Luiza", url: "https://www.magazineluiza.com.br" },
+                { name: "Casas Bahia", url: "https://www.casasbahia.com.br" }
+            ],
+            "Panela de Arroz Elétrico": [
+                { name: "Americanas", url: "https://www.americanas.com.br" },
+                { name: "Magazine Luiza", url: "https://www.magazineluiza.com.br" },
+                { name: "Amazon", url: "https://www.amazon.com.br" }
+            ],
+            "Tapete": [
+                { name: "Tok&Stok", url: "https://www.tokstok.com.br" },
+                { name: "Etna", url: "https://www.etna.com.br" },
+                { name: "Westwing", url: "https://www.westwing.com.br" }
+            ]
+        };
+        
+        // Abrir modal de Pix
+        pixButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const giftName = button.getAttribute('data-gift');
+                const giftPrice = button.getAttribute('data-price');
+                pixModal.style.display = 'flex';
+            });
+        });
+        
+        // Abrir modal da lista
+        listButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const giftName = button.getAttribute('data-gift');
+                const giftPrice = button.getAttribute('data-price');
+                
+                // Atualizar informações no modal
+                listGiftName.textContent = giftName;
+                listGiftPrice.textContent = giftPrice;
+                
+                // Copiar imagem do presente
+                const giftCard = button.closest('.gift-card');
+                const giftImage = giftCard.querySelector('.gift-image').innerHTML;
+                listGiftImage.innerHTML = giftImage;
+                
+                // Atualizar lista de lojas
+                const stores = storeData[giftName];
+                let storeHTML = '';
+                
+                if (stores) {
+                    stores.forEach(store => {
+                        storeHTML += `<li><a href="${store.url}" target="_blank">${store.name}</a></li>`;
+                    });
+                } else {
+                    storeHTML = '<li>Informações de lojas em breve!</li>';
+                }
+                
+                storeList.innerHTML = storeHTML;
+                
+                listModal.style.display = 'flex';
+            });
+        });
+        
+        // Fechar modais
+        closeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                pixModal.style.display = 'none';
+                listModal.style.display = 'none';
+            });
+        });
+        
+        // Fechar modal ao clicar fora
+        window.addEventListener('click', (e) => {
+            if (e.target === pixModal) {
+                pixModal.style.display = 'none';
+            }
+            if (e.target === listModal) {
+                listModal.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
